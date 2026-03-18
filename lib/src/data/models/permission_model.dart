@@ -2,7 +2,7 @@
 /// The data layer owns this model; mappers convert to/from domain entities.
 library;
 
-import 'package:rbac_ui_engine/src/domain/entities/permission.dart';
+import 'package:rbac_flutter/src/domain/entities/permission.dart';
 
 class PermissionModel {
   const PermissionModel({

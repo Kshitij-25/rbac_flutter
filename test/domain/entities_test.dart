@@ -4,7 +4,7 @@
 // These tests define the contract for Role, Permission, Policy, Resource.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rbac_ui_engine/rbac_ui_engine.dart';
+import 'package:rbac_flutter/rbac_ui_engine.dart';
 
 void main() {
   // ── Role ──────────────────────────────────────────────────────────────────
@@ -111,7 +111,7 @@ void main() {
 
   group('Resource', () {
     test('can be created with id and optional attributes', () {
-      final r = Resource(
+      final r = const Resource(
         id: 'invoice:123',
         type: 'invoice',
         attributes: {'owner': 'user_42', 'status': 'draft'},
@@ -122,13 +122,13 @@ void main() {
     });
 
     test('has empty attributes by default', () {
-      final r = Resource(id: 'page:home', type: 'page');
+      final r = const Resource(id: 'page:home', type: 'page');
       expect(r.attributes, isEmpty);
     });
 
     test('value equality', () {
-      final r1 = Resource(id: 'invoice:1', type: 'invoice');
-      final r2 = Resource(id: 'invoice:1', type: 'invoice');
+      final r1 = const Resource(id: 'invoice:1', type: 'invoice');
+      final r2 = const Resource(id: 'invoice:1', type: 'invoice');
       expect(r1, equals(r2));
     });
   });
@@ -152,7 +152,8 @@ void main() {
       expect(policy.statements, hasLength(1));
     });
 
-    test('hasPermissionFor returns true when matching allow statement exists', () {
+    test('hasPermissionFor returns true when matching allow statement exists',
+        () {
       final policy = Policy(
         id: 'p1',
         version: '1',
@@ -201,7 +202,8 @@ void main() {
         ],
       );
       expect(
-        policy.hasPermissionFor(resource: 'any_resource', action: ActionType.read),
+        policy.hasPermissionFor(
+            resource: 'any_resource', action: ActionType.read),
         isTrue,
       );
     });
@@ -231,13 +233,13 @@ void main() {
     });
 
     test('isEmpty returns true for policy with no statements', () {
-      final policy = Policy(id: 'empty', version: '1', statements: []);
+      final policy = const Policy(id: 'empty', version: '1', statements: []);
       expect(policy.isEmpty, isTrue);
     });
 
     test('value equality', () {
-      final p1 = Policy(id: 'p1', version: '1', statements: []);
-      final p2 = Policy(id: 'p1', version: '1', statements: []);
+      final p1 = const Policy(id: 'p1', version: '1', statements: []);
+      final p2 = const Policy(id: 'p1', version: '1', statements: []);
       expect(p1, equals(p2));
     });
   });
@@ -246,12 +248,15 @@ void main() {
 
   group('ActionType', () {
     test('contains standard CRUD actions', () {
-      expect(ActionType.values, containsAll([
-        ActionType.create,
-        ActionType.read,
-        ActionType.update,
-        ActionType.delete,
-      ]));
+      expect(
+        ActionType.values,
+        containsAll([
+          ActionType.create,
+          ActionType.read,
+          ActionType.update,
+          ActionType.delete,
+        ]),
+      );
     });
 
     test('wildcard action exists', () {

@@ -5,7 +5,7 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rbac_ui_engine/rbac_ui_engine.dart';
+import 'package:rbac_flutter/rbac_ui_engine.dart';
 
 // ── Fakes ─────────────────────────────────────────────────────────────────
 

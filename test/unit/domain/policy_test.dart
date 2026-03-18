@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rbac_ui_engine/src/domain/entities/permission.dart';
-import 'package:rbac_ui_engine/src/domain/entities/policy.dart';
-import 'package:rbac_ui_engine/src/domain/entities/role.dart';
+import 'package:rbac_flutter/src/domain/entities/permission.dart';
+import 'package:rbac_flutter/src/domain/entities/policy.dart';
+import 'package:rbac_flutter/src/domain/entities/role.dart';
 
 void main() {
   group('Policy', () {
@@ -65,10 +65,10 @@ void main() {
 
     group('equality', () {
       test('same id and version are equal regardless of permissions', () {
-        final p2 = Policy(
+        final p2 = const Policy(
           id: 'policy-v1',
           version: '1.0.0',
-          rolePermissions: const {},
+          rolePermissions: {},
         );
         expect(policy, equals(p2));
       });

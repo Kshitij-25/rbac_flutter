@@ -12,12 +12,12 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rbac_ui_engine/src/application/providers/rbac_providers.dart';
-import 'package:rbac_ui_engine/src/application/state/rbac_state.dart';
-import 'package:rbac_ui_engine/src/domain/entities/permission.dart';
-import 'package:rbac_ui_engine/src/domain/entities/policy.dart';
-import 'package:rbac_ui_engine/src/domain/entities/role.dart';
-import 'package:rbac_ui_engine/src/presentation/widgets/permission_gate.dart';
+import 'package:rbac_flutter/src/application/providers/rbac_providers.dart';
+import 'package:rbac_flutter/src/application/state/rbac_state.dart';
+import 'package:rbac_flutter/src/domain/entities/permission.dart';
+import 'package:rbac_flutter/src/domain/entities/policy.dart';
+import 'package:rbac_flutter/src/domain/entities/role.dart';
+import 'package:rbac_flutter/src/presentation/widgets/permission_gate.dart';
 
 // ---------------------------------------------------------------------------
 // Test stub — injects a fixed RbacState with no side-effects

@@ -1,19 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:rbac_ui_engine/src/data/models/policy_model.dart';
-import 'package:rbac_ui_engine/src/data/models/permission_model.dart';
-import 'package:rbac_ui_engine/src/data/sources/local/policy_cache_source.dart';
+import 'package:rbac_flutter/src/data/models/permission_model.dart';
+import 'package:rbac_flutter/src/data/models/policy_model.dart';
+import 'package:rbac_flutter/src/data/sources/local/policy_cache_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   late SharedPrefsPolicyCacheSource cacheSource;
 
-  final sampleModel = PolicyModel(
+  final sampleModel = const PolicyModel(
     id: 'pol-cache-01',
     version: '2.0.0',
     rolePermissions: {
       'admin': [
-        const PermissionModel(action: 'read', resource: 'dashboard'),
+        PermissionModel(action: 'read', resource: 'dashboard'),
       ],
     },
   );
@@ -54,11 +53,15 @@ void main() {
       });
 
       test('different keys return different values', () async {
-        final modelA = PolicyModel(
-          id: 'A', version: '1.0', rolePermissions: const {},
+        final modelA = const PolicyModel(
+          id: 'A',
+          version: '1.0',
+          rolePermissions: {},
         );
-        final modelB = PolicyModel(
-          id: 'B', version: '1.0', rolePermissions: const {},
+        final modelB = const PolicyModel(
+          id: 'B',
+          version: '1.0',
+          rolePermissions: {},
         );
 
         await cacheSource.cachePolicy('keyA', modelA);

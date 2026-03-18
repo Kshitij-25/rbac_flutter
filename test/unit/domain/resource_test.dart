@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rbac_ui_engine/src/domain/entities/resource.dart';
+import 'package:rbac_flutter/src/domain/entities/resource.dart';
 
 void main() {
   group('Resource', () {

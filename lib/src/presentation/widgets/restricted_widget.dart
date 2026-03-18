@@ -4,7 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:rbac_ui_engine/src/presentation/widgets/permission_gate.dart';
+import 'package:rbac_flutter/src/presentation/widgets/permission_gate.dart';
 
 class RestrictedWidget extends StatelessWidget {
   const RestrictedWidget({

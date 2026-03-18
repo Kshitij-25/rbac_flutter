@@ -8,8 +8,8 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:dartz/dartz.dart';
-import 'package:rbac_ui_engine/src/data/models/policy_model.dart';
-import 'package:rbac_ui_engine/src/domain/exceptions/rbac_failure.dart';
+import 'package:rbac_flutter/src/data/models/policy_model.dart';
+import 'package:rbac_flutter/src/domain/exceptions/rbac_failure.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class PolicyCacheSource {

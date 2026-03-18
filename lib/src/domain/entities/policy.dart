@@ -4,8 +4,8 @@
 /// They map directly to an OPA-like policy bundle.
 library;
 
-import 'package:rbac_ui_engine/src/domain/entities/permission.dart';
-import 'package:rbac_ui_engine/src/domain/entities/role.dart';
+import 'package:rbac_flutter/src/domain/entities/permission.dart';
+import 'package:rbac_flutter/src/domain/entities/role.dart';
 
 class Policy {
   const Policy({

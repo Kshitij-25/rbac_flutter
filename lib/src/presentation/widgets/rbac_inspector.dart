@@ -10,8 +10,8 @@ library;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rbac_ui_engine/src/application/providers/rbac_providers.dart';
-import 'package:rbac_ui_engine/src/application/state/rbac_state.dart';
+import 'package:rbac_flutter/src/application/providers/rbac_providers.dart';
+import 'package:rbac_flutter/src/application/state/rbac_state.dart';
 
 class RbacInspector extends ConsumerWidget {
   const RbacInspector({

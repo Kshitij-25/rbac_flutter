@@ -1,7 +1,7 @@
 /// JSON-serializable DTO for [Policy].
 library;
 
-import 'package:rbac_ui_engine/rbac_ui_engine.dart';
+import 'package:rbac_flutter/rbac_ui_engine.dart';
 
 class PolicyModel {
   const PolicyModel({

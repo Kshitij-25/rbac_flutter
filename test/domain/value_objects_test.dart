@@ -2,8 +2,8 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rbac_ui_engine/src/domain/value_objects/action_type.dart';
-import 'package:rbac_ui_engine/src/domain/value_objects/effect.dart';
+import 'package:rbac_flutter/src/domain/value_objects/action_type.dart';
+import 'package:rbac_flutter/src/domain/value_objects/effect.dart';
 
 void main() {
   group('ActionType', () {

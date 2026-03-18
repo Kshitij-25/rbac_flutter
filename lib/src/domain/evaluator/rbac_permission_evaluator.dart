@@ -11,11 +11,11 @@
 ///   5. Otherwise → policy.defaultEffect (typically DENY)
 library;
 
-import 'package:rbac_ui_engine/src/domain/entities/permission.dart';
-import 'package:rbac_ui_engine/src/domain/entities/policy.dart';
-import 'package:rbac_ui_engine/src/domain/entities/resource.dart';
-import 'package:rbac_ui_engine/src/domain/entities/role.dart';
-import 'package:rbac_ui_engine/src/domain/interfaces/permission_evaluator.dart';
+import 'package:rbac_flutter/src/domain/entities/permission.dart';
+import 'package:rbac_flutter/src/domain/entities/policy.dart';
+import 'package:rbac_flutter/src/domain/entities/resource.dart';
+import 'package:rbac_flutter/src/domain/entities/role.dart';
+import 'package:rbac_flutter/src/domain/interfaces/permission_evaluator.dart';
 
 class RbacPermissionEvaluator implements PermissionEvaluator {
   const RbacPermissionEvaluator();

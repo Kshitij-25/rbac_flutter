@@ -9,8 +9,8 @@ library;
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:rbac_ui_engine/src/data/sources/remote/policy_remote_source.dart';
-import 'package:rbac_ui_engine/src/domain/exceptions/rbac_failure.dart';
+import 'package:rbac_flutter/src/data/sources/remote/policy_remote_source.dart';
+import 'package:rbac_flutter/src/domain/exceptions/rbac_failure.dart';
 
 // ---------------------------------------------------------------------------
 // Mock

@@ -2,9 +2,9 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rbac_ui_engine/src/data/repositories/static_policy_repository.dart';
-import 'package:rbac_ui_engine/src/domain/entities/permission.dart';
-import 'package:rbac_ui_engine/src/domain/entities/policy.dart';
+import 'package:rbac_flutter/src/data/repositories/static_policy_repository.dart';
+import 'package:rbac_flutter/src/domain/entities/permission.dart';
+import 'package:rbac_flutter/src/domain/entities/policy.dart';
 
 void main() {
   final basePolicy = const Policy(

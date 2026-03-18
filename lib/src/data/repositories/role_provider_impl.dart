@@ -8,9 +8,9 @@ library;
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
-import 'package:rbac_ui_engine/src/domain/entities/role.dart';
-import 'package:rbac_ui_engine/src/domain/exceptions/rbac_failure.dart';
-import 'package:rbac_ui_engine/src/domain/interfaces/role_provider.dart';
+import 'package:rbac_flutter/src/domain/entities/role.dart';
+import 'package:rbac_flutter/src/domain/exceptions/rbac_failure.dart';
+import 'package:rbac_flutter/src/domain/interfaces/role_provider.dart';
 
 class InMemoryRoleProvider implements RoleProvider {
   InMemoryRoleProvider({List<Role> initialRoles = const []})

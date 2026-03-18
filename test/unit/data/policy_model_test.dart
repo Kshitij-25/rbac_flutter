@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rbac_ui_engine/src/data/models/permission_model.dart';
-import 'package:rbac_ui_engine/src/data/models/policy_model.dart';
-import 'package:rbac_ui_engine/src/domain/entities/permission.dart';
-import 'package:rbac_ui_engine/src/domain/entities/policy.dart';
+import 'package:rbac_flutter/src/data/models/permission_model.dart';
+import 'package:rbac_flutter/src/data/models/policy_model.dart';
+import 'package:rbac_flutter/src/domain/entities/permission.dart';
+import 'package:rbac_flutter/src/domain/entities/policy.dart';
 
 void main() {
   group('PolicyModel', () {
@@ -114,8 +114,10 @@ void main() {
         final model2 = PolicyModel.fromJson(json);
         expect(model2.id, equals(model.id));
         expect(model2.version, equals(model.version));
-        expect(model2.rolePermissions.keys.length,
-            equals(model.rolePermissions.keys.length));
+        expect(
+          model2.rolePermissions.keys.length,
+          equals(model.rolePermissions.keys.length),
+        );
       });
     });
 

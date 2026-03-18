@@ -3,11 +3,11 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rbac_ui_engine/src/domain/entities/permission.dart';
-import 'package:rbac_ui_engine/src/domain/entities/policy.dart';
-import 'package:rbac_ui_engine/src/domain/entities/resource.dart';
-import 'package:rbac_ui_engine/src/domain/entities/role.dart';
-import 'package:rbac_ui_engine/src/domain/evaluator/rbac_permission_evaluator.dart';
+import 'package:rbac_flutter/src/domain/entities/permission.dart';
+import 'package:rbac_flutter/src/domain/entities/policy.dart';
+import 'package:rbac_flutter/src/domain/entities/resource.dart';
+import 'package:rbac_flutter/src/domain/entities/role.dart';
+import 'package:rbac_flutter/src/domain/evaluator/rbac_permission_evaluator.dart';
 
 void main() {
   late RbacPermissionEvaluator evaluator;
@@ -24,24 +24,23 @@ void main() {
   late Policy policy;
 
   setUp(() {
-    evaluator = RbacPermissionEvaluator();
-    policy = Policy(
+    evaluator = const RbacPermissionEvaluator();
+    policy = const Policy(
       id: 'p1',
       version: '1.0',
-      defaultEffect: PermissionEffect.deny,
       rolePermissions: {
         'admin': [
-          const Permission(action: 'read', resource: 'dashboard'),
-          const Permission(action: 'write', resource: 'dashboard'),
-          const Permission(action: 'delete', resource: 'invoice'),
-          const Permission(action: '*', resource: 'settings'), // wildcard action
-          const Permission(action: 'read', resource: '*'),     // wildcard resource
+          Permission(action: 'read', resource: 'dashboard'),
+          Permission(action: 'write', resource: 'dashboard'),
+          Permission(action: 'delete', resource: 'invoice'),
+          Permission(action: '*', resource: 'settings'), // wildcard action
+          Permission(action: 'read', resource: '*'), // wildcard resource
         ],
         'viewer': [
-          const Permission(action: 'read', resource: 'dashboard'),
+          Permission(action: 'read', resource: 'dashboard'),
         ],
         'editor': [
-          const Permission(action: 'write', resource: 'invoice'),
+          Permission(action: 'write', resource: 'invoice'),
         ],
       },
     );
@@ -88,13 +87,13 @@ void main() {
     });
 
     test('deny effect overrides allow — explicit deny wins', () {
-      final denyPolicy = Policy(
+      final denyPolicy = const Policy(
         id: 'p2',
         version: '1.0',
         rolePermissions: {
           'admin': [
-            const Permission(action: 'read', resource: 'dashboard'),
-            const Permission(
+            Permission(action: 'read', resource: 'dashboard'),
+            Permission(
               action: 'read',
               resource: 'dashboard',
               effect: PermissionEffect.deny, // explicit deny wins
@@ -121,7 +120,7 @@ void main() {
         evaluator.isAllowed(
           policy: policy,
           role: adminRole,
-          action: 'purge',      // not listed explicitly
+          action: 'purge', // not listed explicitly
           resource: const Resource(id: 'settings'),
           context: {},
         ),
@@ -201,12 +200,12 @@ void main() {
 
   group('Conditional / ABAC rules', () {
     test('allows when condition attributes match context', () {
-      final conditionalPolicy = Policy(
+      final conditionalPolicy = const Policy(
         id: 'cp',
         version: '1.0',
         rolePermissions: {
           'analyst': [
-            const Permission(
+            Permission(
               action: 'read',
               resource: 'report',
               conditions: {'department': 'engineering'},
@@ -229,12 +228,12 @@ void main() {
     });
 
     test('denies when condition attributes do not match context', () {
-      final conditionalPolicy = Policy(
+      final conditionalPolicy = const Policy(
         id: 'cp',
         version: '1.0',
         rolePermissions: {
           'analyst': [
-            const Permission(
+            Permission(
               action: 'read',
               resource: 'report',
               conditions: {'department': 'engineering'},

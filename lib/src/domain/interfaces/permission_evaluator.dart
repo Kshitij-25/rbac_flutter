@@ -5,10 +5,10 @@
 /// anything in the presentation or application layers.
 library;
 
-import 'package:rbac_ui_engine/src/domain/entities/permission.dart';
-import 'package:rbac_ui_engine/src/domain/entities/policy.dart';
-import 'package:rbac_ui_engine/src/domain/entities/resource.dart';
-import 'package:rbac_ui_engine/src/domain/entities/role.dart';
+import 'package:rbac_flutter/src/domain/entities/permission.dart';
+import 'package:rbac_flutter/src/domain/entities/policy.dart';
+import 'package:rbac_flutter/src/domain/entities/resource.dart';
+import 'package:rbac_flutter/src/domain/entities/role.dart';
 
 abstract interface class PermissionEvaluator {
   /// Returns [PermissionEffect.allow] or [PermissionEffect.deny] for

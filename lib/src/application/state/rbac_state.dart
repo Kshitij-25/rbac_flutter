@@ -1,9 +1,9 @@
 /// Immutable state model for the RBAC engine's reactive state.
 library;
 
-import 'package:rbac_ui_engine/src/domain/entities/policy.dart';
-import 'package:rbac_ui_engine/src/domain/entities/role.dart';
-import 'package:rbac_ui_engine/src/domain/exceptions/rbac_failure.dart';
+import 'package:rbac_flutter/src/domain/entities/policy.dart';
+import 'package:rbac_flutter/src/domain/entities/role.dart';
+import 'package:rbac_flutter/src/domain/exceptions/rbac_failure.dart';
 
 sealed class RbacState {
   const RbacState();

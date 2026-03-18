@@ -2,8 +2,8 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rbac_ui_engine/src/data/repositories/role_provider_impl.dart';
-import 'package:rbac_ui_engine/src/domain/entities/role.dart';
+import 'package:rbac_flutter/src/data/repositories/role_provider_impl.dart';
+import 'package:rbac_flutter/src/domain/entities/role.dart';
 
 void main() {
   const admin = Role(id: 'admin', name: 'Admin');

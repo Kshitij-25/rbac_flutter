@@ -4,14 +4,15 @@ library;
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:rbac_ui_engine/src/data/models/permission_model.dart';
-import 'package:rbac_ui_engine/src/data/models/policy_model.dart';
-import 'package:rbac_ui_engine/src/data/repositories/policy_repository_impl.dart';
-import 'package:rbac_ui_engine/src/data/sources/local/policy_cache_source.dart';
-import 'package:rbac_ui_engine/src/data/sources/remote/policy_remote_source.dart';
-import 'package:rbac_ui_engine/src/domain/exceptions/rbac_failure.dart';
+import 'package:rbac_flutter/src/data/models/permission_model.dart';
+import 'package:rbac_flutter/src/data/models/policy_model.dart';
+import 'package:rbac_flutter/src/data/repositories/policy_repository_impl.dart';
+import 'package:rbac_flutter/src/data/sources/local/policy_cache_source.dart';
+import 'package:rbac_flutter/src/data/sources/remote/policy_remote_source.dart';
+import 'package:rbac_flutter/src/domain/exceptions/rbac_failure.dart';
 
 class MockRemoteSource extends Mock implements PolicyRemoteSource {}
+
 class MockCacheSource extends Mock implements PolicyCacheSource {}
 
 void main() {
@@ -19,14 +20,14 @@ void main() {
   late MockCacheSource mockCache;
   late PolicyRepositoryImpl repo;
 
-  final cachedModel = PolicyModel(
+  final cachedModel = const PolicyModel(
     id: 'cached-pol',
     version: '1.0',
     rolePermissions: {
-      'admin': [const PermissionModel(action: 'read', resource: 'x')],
+      'admin': [PermissionModel(action: 'read', resource: 'x')],
     },
   );
-  final remoteModel = PolicyModel(
+  final remoteModel = const PolicyModel(
     id: 'remote-pol',
     version: '2.0',
     rolePermissions: {},

@@ -19,12 +19,12 @@ library;
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rbac_ui_engine/src/application/providers/rbac_providers.dart';
-import 'package:rbac_ui_engine/src/application/state/rbac_state.dart';
-import 'package:rbac_ui_engine/src/application/usecases/get_policy.dart';
-import 'package:rbac_ui_engine/src/application/usecases/update_role.dart';
-import 'package:rbac_ui_engine/src/domain/entities/policy.dart';
-import 'package:rbac_ui_engine/src/domain/entities/role.dart';
+import 'package:rbac_flutter/src/application/providers/rbac_providers.dart';
+import 'package:rbac_flutter/src/application/state/rbac_state.dart';
+import 'package:rbac_flutter/src/application/usecases/get_policy.dart';
+import 'package:rbac_flutter/src/application/usecases/update_role.dart';
+import 'package:rbac_flutter/src/domain/entities/policy.dart';
+import 'package:rbac_flutter/src/domain/entities/role.dart';
 
 class RbacNotifier extends Notifier<RbacState> {
   /// Called by the Riverpod framework — do NOT call manually.

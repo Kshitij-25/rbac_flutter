@@ -2,7 +2,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rbac_ui_engine/src/domain/exceptions/rbac_failure.dart';
+import 'package:rbac_flutter/src/domain/exceptions/rbac_failure.dart';
 
 void main() {
   group('RbacFailure sealed hierarchy', () {

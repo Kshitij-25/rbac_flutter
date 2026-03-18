@@ -5,9 +5,9 @@
 library;
 
 import 'package:dartz/dartz.dart';
-import 'package:rbac_ui_engine/src/domain/entities/policy.dart';
-import 'package:rbac_ui_engine/src/domain/exceptions/rbac_failure.dart';
-import 'package:rbac_ui_engine/src/domain/interfaces/policy_repository.dart';
+import 'package:rbac_flutter/src/domain/entities/policy.dart';
+import 'package:rbac_flutter/src/domain/exceptions/rbac_failure.dart';
+import 'package:rbac_flutter/src/domain/interfaces/policy_repository.dart';
 
 class GetPolicy {
   const GetPolicy(this._repository);

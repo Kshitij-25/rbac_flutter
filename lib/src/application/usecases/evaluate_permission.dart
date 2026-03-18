@@ -4,12 +4,12 @@
 /// Returns a typed result so callers don't need to handle Either directly.
 library;
 
-import 'package:rbac_ui_engine/src/domain/entities/permission.dart';
-import 'package:rbac_ui_engine/src/domain/entities/resource.dart';
-import 'package:rbac_ui_engine/src/domain/exceptions/rbac_failure.dart';
-import 'package:rbac_ui_engine/src/domain/interfaces/permission_evaluator.dart';
-import 'package:rbac_ui_engine/src/domain/interfaces/policy_repository.dart';
-import 'package:rbac_ui_engine/src/domain/interfaces/role_provider.dart';
+import 'package:rbac_flutter/src/domain/entities/permission.dart';
+import 'package:rbac_flutter/src/domain/entities/resource.dart';
+import 'package:rbac_flutter/src/domain/exceptions/rbac_failure.dart';
+import 'package:rbac_flutter/src/domain/interfaces/permission_evaluator.dart';
+import 'package:rbac_flutter/src/domain/interfaces/policy_repository.dart';
+import 'package:rbac_flutter/src/domain/interfaces/role_provider.dart';
 
 sealed class EvaluationResult {
   const EvaluationResult();

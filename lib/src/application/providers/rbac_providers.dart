@@ -17,15 +17,15 @@
 library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rbac_ui_engine/src/application/state/rbac_notifier.dart';
-import 'package:rbac_ui_engine/src/application/state/rbac_state.dart';
-import 'package:rbac_ui_engine/src/application/usecases/evaluate_permission.dart';
-import 'package:rbac_ui_engine/src/application/usecases/get_policy.dart';
-import 'package:rbac_ui_engine/src/application/usecases/update_role.dart';
-import 'package:rbac_ui_engine/src/domain/evaluator/rbac_permission_evaluator.dart';
-import 'package:rbac_ui_engine/src/domain/interfaces/permission_evaluator.dart';
-import 'package:rbac_ui_engine/src/domain/interfaces/policy_repository.dart';
-import 'package:rbac_ui_engine/src/domain/interfaces/role_provider.dart';
+import 'package:rbac_flutter/src/application/state/rbac_notifier.dart';
+import 'package:rbac_flutter/src/application/state/rbac_state.dart';
+import 'package:rbac_flutter/src/application/usecases/evaluate_permission.dart';
+import 'package:rbac_flutter/src/application/usecases/get_policy.dart';
+import 'package:rbac_flutter/src/application/usecases/update_role.dart';
+import 'package:rbac_flutter/src/domain/evaluator/rbac_permission_evaluator.dart';
+import 'package:rbac_flutter/src/domain/interfaces/permission_evaluator.dart';
+import 'package:rbac_flutter/src/domain/interfaces/policy_repository.dart';
+import 'package:rbac_flutter/src/domain/interfaces/role_provider.dart';
 
 // ---------------------------------------------------------------------------
 // Infrastructure — MUST be overridden in ProviderScope
