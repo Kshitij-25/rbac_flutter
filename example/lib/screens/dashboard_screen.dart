@@ -35,7 +35,7 @@ class DashboardScreen extends ConsumerWidget {
                 child: ListTile(
                   leading: const Icon(Icons.person, color: Colors.deepPurple),
                   title: Text(
-                    'Role: ${roles.map((r) => r.name).join(", ")}',
+                    'Role: ${roles.map((r) => r).join(", ")}',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: const Text('Switch role via top-right menu'),
