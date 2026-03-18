@@ -1,0 +1,18 @@
+name: rbac_ui_engine_example
+description: Example app for rbac_ui_engine.
+publish_to: none
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^3.3.1
+  rbac_ui_engine:
+    path: ../
+
+flutter:
+  uses-material-design: true
