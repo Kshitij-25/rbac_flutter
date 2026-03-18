@@ -1,10 +1,10 @@
 {
   "roots": [
-    "rbac_ui_engine"
+    "rbac_flutter"
   ],
   "packages": [
     {
-      "name": "rbac_ui_engine",
+      "name": "rbac_flutter",
       "version": "1.0.0",
       "dependencies": [
         "crypto",

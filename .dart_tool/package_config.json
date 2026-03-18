@@ -608,7 +608,7 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "rbac_ui_engine",
+      "name": "rbac_flutter",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.0"

@@ -1,4 +1,4 @@
-name: rbac_ui_engine
+name: rbac_flutter
 description: >
   A production-grade Flutter/Dart package for Role-Based UI Rendering.
   Declarative, reactive, and RBAC/ABAC-compatible with Clean Architecture.
