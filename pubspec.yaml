@@ -2,7 +2,7 @@ name: rbac_flutter
 description: >
   A production-grade Flutter/Dart package for Role-Based UI Rendering.
   Declarative, reactive, and RBAC/ABAC-compatible with Clean Architecture.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/Kshitij-25/rbac_flutter
 repository: https://github.com/Kshitij-25/rbac_flutter
 issue_tracker: https://github.com/Kshitij-25/rbac_flutter/issues
