@@ -1,4 +1,4 @@
-## 1.0.0
+## 1.0.1
 
 * Initial release
 * Clean Architecture with Domain, Data, Application, Presentation layers
