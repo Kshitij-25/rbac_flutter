@@ -1,4 +1,4 @@
-# rbac_ui_engine
+# rbac_flutter
 
 A production-grade **Role-Based UI Rendering Engine** for Flutter — Clean Architecture, TDD, Riverpod, RBAC + ABAC.
 
@@ -21,7 +21,7 @@ A production-grade **Role-Based UI Rendering Engine** for Flutter — Clean Arch
 
 ```yaml
 dependencies:
-  rbac_ui_engine: ^1.0.0
+  rbac_flutter: ^1.0.0
 ```
 
 ### 2. Provide infrastructure + initialise
