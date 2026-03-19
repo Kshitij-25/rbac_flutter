@@ -1,5 +1,5 @@
-/// TDD tests for the permission evaluator.
-/// Tests are written BEFORE the evaluator implementation.
+/// TDD tests for [RbacPermissionEvaluator].
+/// Tests written BEFORE the evaluator implementation.
 library;
 
 import 'package:flutter_test/flutter_test.dart';
@@ -17,9 +17,9 @@ void main() {
   const editorRole = Role(id: 'editor', name: 'Editor', parentRoleId: 'viewer');
   const guestRole = Role(id: 'guest', name: 'Guest');
 
-  final dashboardResource = const Resource(id: 'dashboard');
-  final invoiceResource = const Resource(id: 'invoice');
-  final analyticsResource = const Resource(id: 'dashboard.analytics');
+  const dashboardResource = Resource(id: 'dashboard');
+  const invoiceResource = Resource(id: 'invoice');
+  const settingsResource = Resource(id: 'settings');
 
   late Policy policy;
 
@@ -33,8 +33,8 @@ void main() {
           Permission(action: 'read', resource: 'dashboard'),
           Permission(action: 'write', resource: 'dashboard'),
           Permission(action: 'delete', resource: 'invoice'),
-          Permission(action: '*', resource: 'settings'), // wildcard action
-          Permission(action: 'read', resource: '*'), // wildcard resource
+          Permission(action: '*', resource: 'settings'),
+          Permission(action: 'read', resource: '*'),
         ],
         'viewer': [
           Permission(action: 'read', resource: 'dashboard'),
@@ -46,6 +46,7 @@ void main() {
     );
   });
 
+  // ── Basic evaluation ────────────────────────────────────────────────────
   group('Basic evaluation', () {
     test('allows when exact permission matches', () {
       expect(
@@ -86,7 +87,7 @@ void main() {
       );
     });
 
-    test('deny effect overrides allow — explicit deny wins', () {
+    test('explicit deny wins over allow for same action+resource', () {
       final denyPolicy = const Policy(
         id: 'p2',
         version: '1.0',
@@ -96,7 +97,7 @@ void main() {
             Permission(
               action: 'read',
               resource: 'dashboard',
-              effect: PermissionEffect.deny, // explicit deny wins
+              effect: PermissionEffect.deny,
             ),
           ],
         },
@@ -114,14 +115,15 @@ void main() {
     });
   });
 
+  // ── Wildcard evaluation ─────────────────────────────────────────────────
   group('Wildcard evaluation', () {
     test('wildcard action (*) allows any action on that resource', () {
       expect(
         evaluator.isAllowed(
           policy: policy,
           role: adminRole,
-          action: 'purge', // not listed explicitly
-          resource: const Resource(id: 'settings'),
+          action: 'purge',
+          resource: settingsResource,
           context: {},
         ),
         isTrue,
@@ -134,15 +136,14 @@ void main() {
           policy: policy,
           role: adminRole,
           action: 'read',
-          resource: invoiceResource, // not listed explicitly for read
+          resource: invoiceResource,
           context: {},
         ),
         isTrue,
       );
     });
 
-    test('wildcard does not grant non-matching action on resource', () {
-      // viewer only has read on dashboard
+    test('wildcard does not grant non-matching action', () {
       expect(
         evaluator.isAllowed(
           policy: policy,
@@ -156,9 +157,10 @@ void main() {
     });
   });
 
+  // ── Role hierarchy ──────────────────────────────────────────────────────
   group('Role hierarchy', () {
     test('child role inherits parent permissions', () {
-      // editor has parentRoleId = viewer; viewer can read dashboard
+      // editor.parentRoleId = 'viewer'; viewer can read dashboard
       expect(
         evaluator.isAllowed(
           policy: policy,
@@ -171,7 +173,7 @@ void main() {
       );
     });
 
-    test('child role keeps its own permissions', () {
+    test('child role retains its own permissions', () {
       expect(
         evaluator.isAllowed(
           policy: policy,
@@ -198,26 +200,28 @@ void main() {
     });
   });
 
+  // ── ABAC conditions ─────────────────────────────────────────────────────
   group('Conditional / ABAC rules', () {
-    test('allows when condition attributes match context', () {
-      final conditionalPolicy = const Policy(
-        id: 'cp',
-        version: '1.0',
-        rolePermissions: {
-          'analyst': [
-            Permission(
-              action: 'read',
-              resource: 'report',
-              conditions: {'department': 'engineering'},
-            ),
-          ],
-        },
-      );
-      const analystRole = Role(id: 'analyst', name: 'Analyst');
+    const analystRole = Role(id: 'analyst', name: 'Analyst');
 
+    Policy conditionalPolicy() => const Policy(
+          id: 'cp',
+          version: '1.0',
+          rolePermissions: {
+            'analyst': [
+              Permission(
+                action: 'read',
+                resource: 'report',
+                conditions: {'department': 'engineering'},
+              ),
+            ],
+          },
+        );
+
+    test('allows when condition attributes match context', () {
       expect(
         evaluator.isAllowed(
-          policy: conditionalPolicy,
+          policy: conditionalPolicy(),
           role: analystRole,
           action: 'read',
           resource: const Resource(id: 'report'),
@@ -228,28 +232,13 @@ void main() {
     });
 
     test('denies when condition attributes do not match context', () {
-      final conditionalPolicy = const Policy(
-        id: 'cp',
-        version: '1.0',
-        rolePermissions: {
-          'analyst': [
-            Permission(
-              action: 'read',
-              resource: 'report',
-              conditions: {'department': 'engineering'},
-            ),
-          ],
-        },
-      );
-      const analystRole = Role(id: 'analyst', name: 'Analyst');
-
       expect(
         evaluator.isAllowed(
-          policy: conditionalPolicy,
+          policy: conditionalPolicy(),
           role: analystRole,
           action: 'read',
           resource: const Resource(id: 'report'),
-          context: {'department': 'marketing'}, // wrong dept
+          context: {'department': 'marketing'},
         ),
         isFalse,
       );
@@ -269,6 +258,7 @@ void main() {
     });
   });
 
+  // ── evaluate() return type ──────────────────────────────────────────────
   group('evaluate() returns PermissionEffect', () {
     test('returns allow for permitted action', () {
       final effect = evaluator.evaluate(

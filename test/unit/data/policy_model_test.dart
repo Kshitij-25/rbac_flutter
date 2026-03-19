@@ -1,3 +1,6 @@
+/// Tests for [PolicyModel] and [PermissionModel] JSON serialisation.
+library;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rbac_flutter/src/data/models/permission_model.dart';
 import 'package:rbac_flutter/src/data/models/policy_model.dart';
@@ -6,7 +9,7 @@ import 'package:rbac_flutter/src/domain/entities/policy.dart';
 
 void main() {
   group('PolicyModel', () {
-    final sampleJson = {
+    final sampleJson = <String, dynamic>{
       'id': 'policy-001',
       'version': '1.2.0',
       'default_effect': 'deny',
@@ -17,13 +20,13 @@ void main() {
             'action': 'read',
             'resource': 'dashboard',
             'effect': 'allow',
-            'conditions': {},
+            'conditions': <String, dynamic>{},
           },
           {
             'action': 'delete',
             'resource': 'invoice',
             'effect': 'deny',
-            'conditions': {},
+            'conditions': <String, dynamic>{},
           },
         ],
         'viewer': [
@@ -31,7 +34,7 @@ void main() {
             'action': 'read',
             'resource': 'dashboard',
             'effect': 'allow',
-            'conditions': {},
+            'conditions': <String, dynamic>{},
           },
         ],
       },
@@ -69,10 +72,7 @@ void main() {
       });
 
       test('handles missing role_permissions gracefully', () {
-        final json = {
-          'id': 'x',
-          'version': '1.0',
-        };
+        final json = <String, dynamic>{'id': 'x', 'version': '1.0'};
         final model = PolicyModel.fromJson(json);
         expect(model.rolePermissions, isEmpty);
       });
@@ -134,7 +134,7 @@ void main() {
 
   group('PermissionModel', () {
     test('fromJson with allow effect', () {
-      final json = {
+      final json = <String, dynamic>{
         'action': 'read',
         'resource': 'dashboard',
         'effect': 'allow',
@@ -147,18 +147,18 @@ void main() {
     });
 
     test('fromJson with deny effect', () {
-      final json = {
+      final json = <String, dynamic>{
         'action': 'delete',
         'resource': 'user',
         'effect': 'deny',
-        'conditions': {},
+        'conditions': <String, dynamic>{},
       };
       final model = PermissionModel.fromJson(json);
       expect(model.toDomain().isDeny, isTrue);
     });
 
     test('defaults effect to allow when missing', () {
-      final json = {'action': 'read', 'resource': 'x'};
+      final json = <String, dynamic>{'action': 'read', 'resource': 'x'};
       final model = PermissionModel.fromJson(json);
       expect(model.effect, equals('allow'));
     });

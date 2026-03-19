@@ -152,12 +152,6 @@
       "languageVersion": "3.3"
     },
     {
-      "name": "http",
-      "rootUri": "file:///Users/kshitij/.pub-cache/hosted/pub.dev/http-1.6.0",
-      "packageUri": "lib/",
-      "languageVersion": "3.4"
-    },
-    {
       "name": "http_multi_server",
       "rootUri": "file:///Users/kshitij/.pub-cache/hosted/pub.dev/http_multi_server-3.2.2",
       "packageUri": "lib/",
@@ -296,7 +290,7 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "rbac_ui_engine",
+      "name": "rbac_flutter",
       "rootUri": "../../",
       "packageUri": "lib/",
       "languageVersion": "3.0"
@@ -506,7 +500,7 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "rbac_ui_engine_example",
+      "name": "rbac_flutter_example",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.0"

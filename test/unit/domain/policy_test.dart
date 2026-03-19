@@ -1,3 +1,6 @@
+/// Tests for the [Policy] domain entity.
+library;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rbac_flutter/src/domain/entities/permission.dart';
 import 'package:rbac_flutter/src/domain/entities/policy.dart';

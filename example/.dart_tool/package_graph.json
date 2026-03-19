@@ -1,21 +1,21 @@
 {
   "roots": [
-    "rbac_ui_engine_example"
+    "rbac_flutter_example"
   ],
   "packages": [
     {
-      "name": "rbac_ui_engine_example",
+      "name": "rbac_flutter_example",
       "version": "1.0.0+1",
       "dependencies": [
         "flutter",
         "flutter_riverpod",
-        "rbac_ui_engine"
+        "rbac_flutter"
       ],
       "devDependencies": []
     },
     {
-      "name": "rbac_ui_engine",
-      "version": "1.0.0",
+      "name": "rbac_flutter",
+      "version": "1.0.1",
       "dependencies": [
         "crypto",
         "dartz",
@@ -23,7 +23,6 @@
         "equatable",
         "flutter",
         "flutter_riverpod",
-        "http",
         "json_annotation",
         "logger",
         "riverpod",
@@ -92,16 +91,6 @@
       "version": "4.11.0",
       "dependencies": [
         "meta"
-      ]
-    },
-    {
-      "name": "http",
-      "version": "1.6.0",
-      "dependencies": [
-        "async",
-        "http_parser",
-        "meta",
-        "web"
       ]
     },
     {
@@ -297,18 +286,13 @@
       ]
     },
     {
-      "name": "web",
-      "version": "1.1.1",
-      "dependencies": []
-    },
-    {
-      "name": "http_parser",
-      "version": "4.1.2",
+      "name": "dio_web_adapter",
+      "version": "2.1.2",
       "dependencies": [
-        "collection",
-        "source_span",
-        "string_scanner",
-        "typed_data"
+        "dio",
+        "http_parser",
+        "meta",
+        "web"
       ]
     },
     {
@@ -320,6 +304,16 @@
       "name": "mime",
       "version": "2.0.0",
       "dependencies": []
+    },
+    {
+      "name": "http_parser",
+      "version": "4.1.2",
+      "dependencies": [
+        "collection",
+        "source_span",
+        "string_scanner",
+        "typed_data"
+      ]
     },
     {
       "name": "typed_data",
@@ -413,6 +407,11 @@
         "meta",
         "path"
       ]
+    },
+    {
+      "name": "web",
+      "version": "1.1.1",
+      "dependencies": []
     },
     {
       "name": "flutter_web_plugins",
@@ -765,16 +764,6 @@
       "dependencies": [
         "meta",
         "source_span"
-      ]
-    },
-    {
-      "name": "dio_web_adapter",
-      "version": "2.1.2",
-      "dependencies": [
-        "dio",
-        "http_parser",
-        "meta",
-        "web"
       ]
     }
   ],

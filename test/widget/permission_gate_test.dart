@@ -1,32 +1,34 @@
 /// Widget tests for [PermissionGate].
 ///
-/// We inject a [_StubRbacNotifier] via [rbacNotifierProvider.overrideWith]
-/// so we can force any [RbacState] without touching repositories.
-///
-/// Pattern:
-///   rbacNotifierProvider.overrideWith(() => _StubRbacNotifier(state))
-///
-/// This is the idiomatic Riverpod 3.x way to stub a [NotifierProvider].
+/// ## Riverpod 3.x stub pattern
+/// `NotifierProvider<RbacNotifier, RbacState>.overrideWith()` requires the
+/// factory to return the *exact* declared notifier type (`RbacNotifier`).
+/// `_StubRbacNotifier` therefore extends `RbacNotifier` (not the base
+/// `Notifier<RbacState>`) and overrides `build()` without calling `super`,
+/// so none of the real infrastructure providers are ever touched.
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rbac_flutter/src/application/providers/rbac_providers.dart';
+import 'package:rbac_flutter/src/application/state/rbac_notifier.dart';
 import 'package:rbac_flutter/src/application/state/rbac_state.dart';
 import 'package:rbac_flutter/src/domain/entities/permission.dart';
 import 'package:rbac_flutter/src/domain/entities/policy.dart';
 import 'package:rbac_flutter/src/domain/entities/role.dart';
+import 'package:rbac_flutter/src/domain/exceptions/rbac_failure.dart';
 import 'package:rbac_flutter/src/presentation/widgets/permission_gate.dart';
 
 // ---------------------------------------------------------------------------
-// Test stub — injects a fixed RbacState with no side-effects
+// Stub — extends RbacNotifier so overrideWith type-checks correctly
 // ---------------------------------------------------------------------------
 
-class _StubRbacNotifier extends Notifier<RbacState> {
+class _StubRbacNotifier extends RbacNotifier {
   _StubRbacNotifier(this._fixedState);
   final RbacState _fixedState;
 
+  /// Override completely — never call super.build() so no ref.read happens.
   @override
   RbacState build() => _fixedState;
 }
@@ -35,17 +37,13 @@ class _StubRbacNotifier extends Notifier<RbacState> {
 // Helpers
 // ---------------------------------------------------------------------------
 
-Widget _buildApp({required RbacState state, required Widget child}) {
-  return ProviderScope(
-    overrides: [
-      rbacNotifierProvider.overrideWith(() => _StubRbacNotifier(state)),
-    ],
-    child: MaterialApp(home: Scaffold(body: child)),
-  );
-}
+Widget _app({required RbacState state, required Widget child}) => ProviderScope(
+      overrides: [
+        rbacNotifierProvider.overrideWith(() => _StubRbacNotifier(state)),
+      ],
+      child: MaterialApp(home: Scaffold(body: child)),
+    );
 
-/// Builds a [RbacReady] state.
-/// [allowRead] controls whether the admin role has read on dashboard.
 RbacReady _readyState({
   bool allowReadDashboard = true,
   bool allowWriteDashboard = false,
@@ -57,7 +55,6 @@ RbacReady _readyState({
     if (allowWriteDashboard)
       const Permission(action: 'write', resource: 'dashboard'),
   ];
-
   return RbacReady(
     policy: Policy(
       id: 'test',
@@ -74,11 +71,11 @@ RbacReady _readyState({
 
 void main() {
   group('PermissionGate', () {
-    // -----------------------------------------------------------------------
+    // ── Allowed ─────────────────────────────────────────────────────────────
     group('RbacReady — allowed', () {
       testWidgets('renders child when permission is granted', (tester) async {
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: _readyState(),
             child: const PermissionGate(
               action: 'read',
@@ -94,7 +91,7 @@ void main() {
 
       testWidgets('does not render fallback when allowed', (tester) async {
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: _readyState(),
             child: const PermissionGate(
               action: 'read',
@@ -111,11 +108,11 @@ void main() {
       });
     });
 
-    // -----------------------------------------------------------------------
+    // ── Denied ──────────────────────────────────────────────────────────────
     group('RbacReady — denied', () {
       testWidgets('hides child when permission is denied', (tester) async {
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: _readyState(allowReadDashboard: false),
             child: const PermissionGate(
               action: 'read',
@@ -132,7 +129,7 @@ void main() {
       testWidgets('renders fallback when denied and fallback provided',
           (tester) async {
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: _readyState(allowReadDashboard: false),
             child: const PermissionGate(
               action: 'read',
@@ -148,11 +145,10 @@ void main() {
         expect(find.text('Protected Content'), findsNothing);
       });
 
-      testWidgets(
-          'renders disabledChild instead of fallback when both provided',
+      testWidgets('renders disabledChild over fallback when both provided',
           (tester) async {
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: _readyState(allowReadDashboard: false),
             child: const PermissionGate(
               action: 'read',
@@ -170,10 +166,10 @@ void main() {
         expect(find.text('Active Version'), findsNothing);
       });
 
-      testWidgets('renders SizedBox.shrink when denied with no fallback',
+      testWidgets('renders SizedBox when denied with no fallback',
           (tester) async {
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: _readyState(allowReadDashboard: false),
             child: const PermissionGate(
               action: 'read',
@@ -185,17 +181,16 @@ void main() {
         await tester.pump();
 
         expect(find.text('Protected Content'), findsNothing);
-        // SizedBox.shrink has zero size — we just verify no content visible
         expect(find.byType(SizedBox), findsWidgets);
       });
     });
 
-    // -----------------------------------------------------------------------
+    // ── Loading ─────────────────────────────────────────────────────────────
     group('Loading state', () {
-      testWidgets('renders default CircularProgressIndicator while loading',
+      testWidgets('renders CircularProgressIndicator while loading',
           (tester) async {
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: const RbacLoading(),
             child: const PermissionGate(
               action: 'read',
@@ -211,7 +206,7 @@ void main() {
 
       testWidgets('renders custom loadingWidget when provided', (tester) async {
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: const RbacLoading(),
             child: const PermissionGate(
               action: 'read',
@@ -227,11 +222,11 @@ void main() {
       });
     });
 
-    // -----------------------------------------------------------------------
+    // ── Fail-safe states ────────────────────────────────────────────────────
     group('Initial / Error states (fail-safe)', () {
-      testWidgets('hides child in Initial state (fail-closed)', (tester) async {
+      testWidgets('hides child in Initial state', (tester) async {
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: const RbacInitial(),
             child: const PermissionGate(
               action: 'read',
@@ -246,7 +241,7 @@ void main() {
 
       testWidgets('shows fallback in Error state', (tester) async {
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: const RbacError(PolicyFetchFailure('Network down')),
             child: const PermissionGate(
               action: 'read',
@@ -262,7 +257,7 @@ void main() {
       });
     });
 
-    // -----------------------------------------------------------------------
+    // ── ABAC context ─────────────────────────────────────────────────────────
     group('ABAC context (abacContext)', () {
       testWidgets('allows when abacContext matches policy conditions',
           (tester) async {
@@ -284,7 +279,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: conditionalState,
             child: const PermissionGate(
               action: 'read',
@@ -319,12 +314,12 @@ void main() {
         );
 
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: conditionalState,
             child: const PermissionGate(
               action: 'read',
               resource: 'report',
-              abacContext: {'dept': 'marketing'}, // wrong dept
+              abacContext: {'dept': 'marketing'},
               fallback: Text('Not authorised'),
               child: Text('Confidential Report'),
             ),
@@ -337,7 +332,7 @@ void main() {
       });
     });
 
-    // -----------------------------------------------------------------------
+    // ── Multi-role ───────────────────────────────────────────────────────────
     group('Multi-role user', () {
       testWidgets('allows if any assigned role has permission', (tester) async {
         final multiRoleState = const RbacReady(
@@ -358,7 +353,7 @@ void main() {
         );
 
         await tester.pumpWidget(
-          _buildApp(
+          _app(
             state: multiRoleState,
             child: const PermissionGate(
               action: 'read',

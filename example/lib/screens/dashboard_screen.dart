@@ -3,7 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rbac_ui_engine/rbac_ui_engine.dart';
+import 'package:rbac_flutter/rbac_ui_engine.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});

@@ -1,3 +1,6 @@
+/// Tests for [SharedPrefsPolicyCacheSource].
+library;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rbac_flutter/src/data/models/permission_model.dart';
 import 'package:rbac_flutter/src/data/models/policy_model.dart';
@@ -7,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   late SharedPrefsPolicyCacheSource cacheSource;
 
-  final sampleModel = const PolicyModel(
+  const sampleModel = PolicyModel(
     id: 'pol-cache-01',
     version: '2.0.0',
     rolePermissions: {
@@ -52,13 +55,13 @@ void main() {
         });
       });
 
-      test('different keys return different values', () async {
-        final modelA = const PolicyModel(
+      test('different keys return independent values', () async {
+        const modelA = PolicyModel(
           id: 'A',
           version: '1.0',
           rolePermissions: {},
         );
-        final modelB = const PolicyModel(
+        const modelB = PolicyModel(
           id: 'B',
           version: '1.0',
           rolePermissions: {},

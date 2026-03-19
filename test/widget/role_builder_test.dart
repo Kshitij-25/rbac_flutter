@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rbac_flutter/src/application/providers/rbac_providers.dart';
+import 'package:rbac_flutter/src/application/state/rbac_notifier.dart';
 import 'package:rbac_flutter/src/application/state/rbac_state.dart';
 import 'package:rbac_flutter/src/domain/entities/permission.dart';
 import 'package:rbac_flutter/src/domain/entities/policy.dart';
@@ -14,15 +15,20 @@ import 'package:rbac_flutter/src/presentation/builders/role_builder.dart';
 import 'package:rbac_flutter/src/presentation/widgets/restricted_widget.dart';
 
 // ---------------------------------------------------------------------------
-// Shared stub notifier
+// Stub notifier — extends RbacNotifier for correct Riverpod 3.x type-check
 // ---------------------------------------------------------------------------
 
-class _StubRbacNotifier extends Notifier<RbacState> {
+class _StubRbacNotifier extends RbacNotifier {
   _StubRbacNotifier(this._state);
   final RbacState _state;
+
   @override
-  RbacState build() => _state;
+  RbacState build() => _state; // never calls super.build()
 }
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
 Widget _app({required RbacState state, required Widget child}) => ProviderScope(
       overrides: [
@@ -31,28 +37,33 @@ Widget _app({required RbacState state, required Widget child}) => ProviderScope(
       child: MaterialApp(home: Scaffold(body: child)),
     );
 
-RbacReady _readyWithRoles(List<Role> roles, {bool allowWrite = false}) =>
-    RbacReady(
-      policy: Policy(
-        id: 'test',
-        version: '1.0',
-        rolePermissions: {
-          for (final r in roles)
-            r.id: [
-              const Permission(action: 'read', resource: 'dashboard'),
-              if (allowWrite)
-                const Permission(action: 'write', resource: 'dashboard'),
-            ],
-        },
-      ),
-      roles: roles,
-    );
+RbacReady _readyWithRoles(
+  List<Role> roles, {
+  bool allowWrite = false,
+}) {
+  return RbacReady(
+    policy: Policy(
+      id: 'test',
+      version: '1.0',
+      rolePermissions: {
+        for (final r in roles)
+          r.id: [
+            const Permission(action: 'read', resource: 'dashboard'),
+            if (allowWrite)
+              const Permission(action: 'write', resource: 'dashboard'),
+          ],
+      },
+    ),
+    roles: roles,
+  );
+}
 
 // ---------------------------------------------------------------------------
-// RoleBuilder tests
+// Tests
 // ---------------------------------------------------------------------------
 
 void main() {
+  // ── RoleBuilder ────────────────────────────────────────────────────────────
   group('RoleBuilder', () {
     testWidgets('calls builder with roles in Ready state', (tester) async {
       const adminRole = Role(id: 'admin', name: 'Admin');
@@ -70,7 +81,7 @@ void main() {
       expect(find.text('admin'), findsOneWidget);
     });
 
-    testWidgets('shows default loading indicator in Loading state',
+    testWidgets('shows default CircularProgressIndicator in Loading state',
         (tester) async {
       await tester.pumpWidget(
         _app(
@@ -150,9 +161,9 @@ void main() {
     });
   });
 
-  // -------------------------------------------------------------------------
+  // ── RestrictedWidget ───────────────────────────────────────────────────────
   group('RestrictedWidget', () {
-    testWidgets('renders child normally when permission granted',
+    testWidgets('renders child interactively when permission granted',
         (tester) async {
       const role = Role(id: 'admin', name: 'Admin');
       await tester.pumpWidget(
@@ -170,7 +181,6 @@ void main() {
       );
       await tester.pump();
 
-      // Child button is present and interactive
       final button = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
       expect(button.onPressed, isNotNull);
       expect(find.text('Save'), findsOneWidget);
@@ -196,10 +206,22 @@ void main() {
 
       // Button text still visible (opacity, not hidden)
       expect(find.text('Save'), findsOneWidget);
-      // Wrapped in IgnorePointer to block taps
-      expect(find.byType(IgnorePointer), findsOneWidget);
-      // Opacity widget wraps it
-      expect(find.byType(Opacity), findsOneWidget);
+
+      // Our IgnorePointer — specifically the one with ignoring: true.
+      // Flutter's internal scaffold/gesture detectors may add their own
+      // IgnorePointer widgets with ignoring: false, so we match by value.
+      final ignorePointers = tester
+          .widgetList<IgnorePointer>(find.byType(IgnorePointer))
+          .where((w) => w.ignoring)
+          .toList();
+      expect(ignorePointers, hasLength(1));
+
+      // Our Opacity — the one with the user-specified opacity (default 0.4).
+      final opacities = tester
+          .widgetList<Opacity>(find.byType(Opacity))
+          .where((w) => w.opacity == 0.4)
+          .toList();
+      expect(opacities, hasLength(1));
     });
 
     testWidgets('applies custom disabledOpacity', (tester) async {
@@ -217,12 +239,14 @@ void main() {
       );
       await tester.pump();
 
-      final opacity = tester.widget<Opacity>(find.byType(Opacity));
-      expect(opacity.opacity, equals(0.2));
+      final opacities = tester
+          .widgetList<Opacity>(find.byType(Opacity))
+          .where((w) => w.opacity == 0.2)
+          .toList();
+      expect(opacities, hasLength(1));
     });
 
-    testWidgets('shows Tooltip with default message when denied',
-        (tester) async {
+    testWidgets('shows default Tooltip message when denied', (tester) async {
       const role = Role(id: 'viewer', name: 'Viewer');
       await tester.pumpWidget(
         _app(

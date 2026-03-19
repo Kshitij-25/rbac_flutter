@@ -1,5 +1,5 @@
-name: rbac_ui_engine_example
-description: Example app for rbac_ui_engine.
+name: rbac_flutter_example
+description: Example app for rbac_flutter.
 publish_to: none
 version: 1.0.0+1
 
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^3.3.1
-  rbac_ui_engine:
+  rbac_flutter:
     path: ../
 
 flutter:

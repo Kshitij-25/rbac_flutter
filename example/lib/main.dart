@@ -9,8 +9,8 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rbac_ui_engine/rbac_ui_engine.dart';
-import 'package:rbac_ui_engine_example/screens/dashboard_screen.dart';
+import 'package:rbac_flutter/rbac_ui_engine.dart';
+import 'package:rbac_flutter_example/screens/dashboard_screen.dart';
 
 void main() {
   // Demo policy — in production, fetch via HttpPolicyRemoteSource.
